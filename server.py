@@ -17,9 +17,12 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = mongo_url = os.getenv('MONGO_URI')
+mongo_url = os.getenv('MONGO_URL')
+if not mongo_url:
+    mongo_url = "mongodb+srv://flourma:Zerotoone1698@flourma.28ww0rg.mongodb.net/nutrition_db?retryWrites=true&w=majority&appName=flourma"
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.getenv('DB_NAME', 'nutrition_db')]
+
 
 # JWT settings
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'nutrition-app-secret-key-change-in-production')
