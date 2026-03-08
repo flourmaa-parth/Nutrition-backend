@@ -17,7 +17,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = mongo_url = os.getenv('MONGO_URI')
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
@@ -30,6 +30,13 @@ security = HTTPBearer()
 
 # Create the main app
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 api_router = APIRouter(prefix="/api")
 
 # ============ Models ============
